@@ -13,7 +13,7 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://<MY_AWS_LOAD_BALANCER_URL>/login", {
+      const response = await axios.post("<MY_AWS_LOAD_BALANCER_URL>/login", {
         username,
         password,
       });
