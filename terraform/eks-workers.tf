@@ -23,3 +23,12 @@ resource "aws_eks_node_group" "node_group" {
     min_size     = 1
   }
 }
+
+/*
+
+after terraform apply, configure kubectl by running:
+
+aws eks update-kubeconfig --region us-east-1 --name my-eks-cluster
+kubectl get nodes
+
+*/
