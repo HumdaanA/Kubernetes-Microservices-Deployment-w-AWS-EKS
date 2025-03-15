@@ -1,22 +1,73 @@
+# Frontend Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-service
+  name: frontend
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: auth-service
+      app: frontend
   template:
     metadata:
       labels:
-        app: auth-service
+        app: frontend
     spec:
       containers:
-      - name: auth-service
-        image: <MY_AWS_ECR_URL>/auth-service
+      - name: frontend
+        image: <AWS_ECR_URL>/frontend
         ports:
-        - containerPort: 5000
+        - containerPort: 3000
 
+---
+# Frontend Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  selector:
+    app: frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+  type: LoadBalancer
+
+---
+# Ingress for all services
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+spec:
+  rules:
+  - host: yourdomain.com
+    http:
+      paths:
+      - path: /auth
+        pathType: Prefix
+        backend:
+          service:
+            name: auth-service
+            port:
+              number: 80
+      - path: /backend
+        pathType: Prefix
+        backend:
+          service:
+            name: backend
+            port:
+              number: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 80
 
 # I left my ECR URL out of the code, enter your ECR URL in place of <MY_AWS_ECR_URL>
+
+
+## apply with kubectl apply -f deployment.yaml
