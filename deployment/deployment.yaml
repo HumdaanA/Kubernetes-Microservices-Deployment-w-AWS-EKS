@@ -19,4 +19,4 @@ spec:
         - containerPort: 5000
 
 
-// I left my ECR URL out of the code, enter your ECR URL in place of <MY_AWS_ECR_URL>
+# I left my ECR URL out of the code, enter your ECR URL in place of <MY_AWS_ECR_URL>
